@@ -20,7 +20,7 @@ jobs:
     runs-on: [self-hosted]
     steps:
       - name: Checkout
-        uses: ForestRealms/checkout@v3
+        uses: ForestRealms/checkout@v3.3.0
       - name: Set up JDK 17
         uses: ForestRealms/setup-java@v3.9.0
         with:
