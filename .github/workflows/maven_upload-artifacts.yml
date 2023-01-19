@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: ForestRealms/upload-artifact/checkout@v3.3
+    - uses: ForestRealms/checkout@v3.3
     - name: Set up JDK 17
       uses: ForestRealms/setup-java@v3.9.0
       with:
