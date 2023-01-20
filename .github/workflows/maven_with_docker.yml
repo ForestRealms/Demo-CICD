@@ -58,14 +58,13 @@ jobs:
   package:
       needs: [build, test]
       runs-on: [self-hosted]
-      container: "ubuntu:22.10"
+      # container: "ubuntu:22.10"
       steps:
         - name: Download all artifacts"
           uses: actions/download-artifact@v3
 
         - name: "copy and package"
           run: |
-              apt-get install tree -y
               mkdir ./artifacts
               tree
               cp -r ./${{env.name}}* ./artifacts
