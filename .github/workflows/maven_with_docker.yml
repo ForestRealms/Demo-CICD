@@ -25,6 +25,9 @@ jobs:
       uses: ForestRealms/checkout@v3.3.0
     - name: "setup-java"
       uses: ForestRealms/setup-java@v3.9.0
+      with:
+        distribution: 'temurin'
+        java-version: '17'
     - name: Build with Maven
       run: mvn -B package --file pom.xml
     - name: "upload"
