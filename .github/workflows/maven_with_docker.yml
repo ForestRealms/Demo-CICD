@@ -18,9 +18,17 @@ jobs:
   build:
 
     runs-on: [self-hosted]
-    container: "127.0.0.1:5000/spigot"
+    container: "ubuntu:22.10"
 
     steps:
+    - name: "checkout"
+      uses: ForestRealms/checkout@v3.3.0
+    - name: "setup-java"
+      uses: ForestRealms/setup-java@v3.9.0
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-
+    - name: "upload"
+      uses: ForestRealms/upload-artifact@v3.1.2
+      with:
+        name: "游戏插件"
+        path: ./target/Minecraft*.jar
