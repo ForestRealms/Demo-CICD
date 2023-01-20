@@ -8,6 +8,10 @@
 
 name: Java CI with Maven (Docker)
 
+env:
+  name: "Minecraft-Fireworks"
+  version: "2.0.0"
+
 on:
   push:
     branches: [ "master" ]
@@ -18,16 +22,11 @@ jobs:
   test: 
     strategy:
       matrix:
-        maven: 
-          - 3.8.2-openjdk-17
-          - 3.8.2-openjdk-16
-          - 3.8.2-openjdk-8
-          - 3.8.2-openjdk-11
-          - 3.8.7-openjdk-18
+        jdk: [16, 11, 8, 17, 18]
         mc: [1.14.3, 1.15.2, 1.16.5, 1.17.1, 1.18.2, 1.19.3]
     
     runs-on: [self-hosted]
-    container: "maven:${{matrix.maven}}"
+    container: "127.0.0.1:5000/spigot:jdk${{matrix.jdk}}"
     steps:
     - name: "checkout"
       uses: actions/checkout@v3.3.0
@@ -49,5 +48,26 @@ jobs:
     - name: "upload"
       uses: actions/upload-artifact@v3.1.2
       with:
-        name: "游戏插件-2023"
+        name: "${{env.name}}_${{env.version}}_${{matrix.mc}}"
         path: ./target/Minecraft*.jar
+        
+  package:
+      needs: [build]
+      runs-on: [self-hosted]
+      container: "ubuntu:22.10"
+      steps:
+        - name: Download all artifacts"
+          uses: actions/download-artifact@v3
+
+        - name: "copy and package"
+          run: |
+              mkdir ./artifacts
+              cp ./${{env.name}}-* ./artifacts
+              tar -zcvf ./${{env.name}}-${{env.version}}.tar.gz ./artifacts
+
+        - name: "upload-package-file"
+          uses: actions/upload-artifact@v3
+          with:
+            name: ${{env.name}}-${{env.version}}
+            path: ./${{env.name}}-${{env.version}}.tar.gz
+
