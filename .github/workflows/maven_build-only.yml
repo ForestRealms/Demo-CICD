@@ -49,6 +49,15 @@ jobs:
       - name: Download all artifacts"
         uses: actions/download-artifact@v3
         
-      - name: "ls"
-        run: "tree"
-    
+      - name: "copy and package"
+        run: |
+            mkdir ./artifacts
+            cp ./${{env.name}}-* ./artifacts
+            tar -zcvf ./${{env.name}}-${{env.version}}.tar.gz ./artifacts
+            
+      - name: "upload-package-file"
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{env.name}}-${{env.version}}
+          path: ./${{env.name}}-${{env.version}}.tar.gz
+
