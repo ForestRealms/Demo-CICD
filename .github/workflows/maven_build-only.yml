@@ -32,7 +32,7 @@ jobs:
     - uses: actions/checkout@v3
     
     - name: Build with Maven
-      run: mvn clean package --file pom${{matrix.mc}}.xml
+      run: mvn clean package --file pom-${{matrix.mc}}.xml
       
     - name: upload-artifact
       uses: actions/upload-artifact@v3
