@@ -78,7 +78,7 @@ jobs:
           prerelease: false
   
   Upload_Assests:
-    needs: []
+    needs: [Create_Release]
     runs-on: [self-hosted]
     strategy:
       max-parallel: 6
