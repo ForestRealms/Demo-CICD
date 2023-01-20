@@ -65,7 +65,7 @@ jobs:
         - name: "copy and package"
           run: |
               mkdir ./artifacts
-              cp ./${{env.name}}-* ./artifacts
+              cp ./${{env.name}}* ./artifacts
               tar -zcvf ./${{env.name}}-${{env.version}}.tar.gz ./artifacts
 
         - name: "upload-package-file"
