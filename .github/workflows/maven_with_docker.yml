@@ -62,23 +62,10 @@ jobs:
             path: ./artifacts
            # path: ./${{env.name}}-${{env.version}}.tar.gz
 
-  release:
+  Create_Release:
     needs: [package]
-    container: "ubuntu:22.10"
     runs-on: [self-hosted]
     steps: 
-      - run: "mkdir ./artifacts"
-      
-      - name: Download artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: ${{env.name}}-${{env.version}}
-          path: "./artifacts"
-          
-      - run: |
-            cd ./artifacts
-            tar -zcvf ./${{env.name}}-${{env.version}}.tar.gz ./*.jar
-        
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -89,7 +76,22 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
-          
+  
+  Upload_Assests:
+    needs: []
+    runs-on: [self-hosted]
+    strategy:
+      max-parallel: 6
+      matrix:
+        mc: [1.14.3, 1.15.2, 1.16.5, 1.17.1, 1.18.2, 1.19.3]
+    container: "ubuntu:22.10"
+    steps:
+    
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{env.name}}_${{env.version}}_${{matrix.mc}}
+        
       - name: Upload Release Asset
         id: upload-release-asset 
         uses: actions/upload-release-asset@v1
@@ -97,7 +99,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./${{env.name}}-${{env.version}}.tar.gz
-          asset_name: ${{env.name}}-${{env.version}}.tar.gz
-          asset_content_type: application/zip
+          asset_path: ./${{env.name}}_${{env.version}}_${{matrix.mc}}/*.jar
+          asset_name: ${{env.name}}_${{env.version}}_${{matrix.mc}}.jar
+          asset_content_type: application/jar
     
