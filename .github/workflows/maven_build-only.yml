@@ -64,6 +64,7 @@ jobs:
         asset_content_type: application/jar
       
   package:
+    needs: [build]
     runs-on: [self-hosted]
     steps:
       - name: Download all artifacts"
