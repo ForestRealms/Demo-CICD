@@ -10,6 +10,7 @@ name: 仅构建，不测试
 
 env:
   version: "2.0.0"
+  name: "Minecraft Fireworks"
 
 on:
   push:
@@ -36,7 +37,7 @@ jobs:
     - name: upload-artifact
       uses: actions/upload-artifact@v3
       with:
-        name: ${{NAME}}-${{env.version}}-${{matrix.mc}}
+        name: ${{env.name}}-${{env.version}}-${{matrix.mc}}
         path: "./target/M*.jar"
       
       
