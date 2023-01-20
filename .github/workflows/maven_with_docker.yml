@@ -57,7 +57,7 @@ jobs:
         path: ./target/Minecraft*.jar
         
   package:
-      needs: [build]
+      needs: [build, test]
       runs-on: [self-hosted]
       container: "ubuntu:22.10"
       steps:
