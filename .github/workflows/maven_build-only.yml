@@ -36,7 +36,7 @@ jobs:
     - name: upload-artifact
       uses: actions/upload-artifact@v3
       with:
-        name: ${{NMAE}}-${{env.version}}-${{matrix.mc}}
+        name: ${{NAME}}-${{env.version}}-${{matrix.mc}}
         path: "./target/M*.jar"
       
       
