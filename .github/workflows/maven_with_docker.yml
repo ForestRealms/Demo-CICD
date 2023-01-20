@@ -37,7 +37,7 @@ jobs:
     
   build:     
     runs-on: [self-hosted]
-    container: "maven:3.8.2-openjdk-8"
+    container: "127.0.0.1:5000/spigot:jdk8"
     needs: test
 
     steps:
@@ -52,7 +52,7 @@ jobs:
         path: ./target/Minecraft*.jar
         
   package:
-      needs: [build]
+      needs: [build, test]
       runs-on: [self-hosted]
       container: "ubuntu:22.10"
       steps:
