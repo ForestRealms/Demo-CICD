@@ -64,6 +64,7 @@ jobs:
 
         - name: "copy and package"
           run: |
+              apt-get install tree -y
               mkdir ./artifacts
               tree
               cp -r ./${{env.name}}* ./artifacts
