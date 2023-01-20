@@ -18,16 +18,16 @@ jobs:
   build:
 
     runs-on: [self-hosted]
-    container: "ubuntu:22.10"
+    container: "maven:3.8.7-openjdk-18"
 
     steps:
     - name: "checkout"
       uses: ForestRealms/checkout@v3.3.0
-    - name: "setup-java"
-      uses: ForestRealms/setup-java@v3.9.0
-      with:
-        distribution: 'temurin'
-        java-version: '17'
+#     - name: "setup-java"
+#       uses: ForestRealms/setup-java@v3.9.0
+#       with:
+#         distribution: 'temurin'
+#         java-version: '17'
     - name: Build with Maven
       run: mvn -B package --file pom.xml
     - name: "upload"
