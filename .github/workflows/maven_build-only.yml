@@ -34,7 +34,7 @@ jobs:
       run: mvn clean package --file pom${{matrix.mc}}.xml
       
     - name: upload-artifact
-    - uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v3
       with:
         name: ${{NMAE}}-${{env.version}}-${{matrix.mc}}
         path: "./target/M*.jar"
