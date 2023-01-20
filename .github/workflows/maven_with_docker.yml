@@ -42,6 +42,7 @@ jobs:
   build:     
     runs-on: [self-hosted]
     container: "ubuntu:22.10"
+    needs: test
 
     steps:
     - name: "checkout"
