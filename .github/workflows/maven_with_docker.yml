@@ -15,8 +15,31 @@ on:
     branches: [ "master" ]
 
 jobs:
-  build:
-
+  test: 
+    strategy:
+      matrix:
+        java: [8, 11, 16, 17]
+        mc: [1.14.3, 1.15.2, 1.16.5, 1.17.1, 1.18.2, 1.19.3]
+    
+    runs-on: [self-hosted]
+    container: "ubuntu:22.10"
+    steps:
+    - name: "checkout"
+      uses: actions/checkout@v3.3.0
+    - name: "setup-java"
+      uses: actions/setup-java@v3.9.0
+      with:
+        distribution: 'temurin'
+        java-version: '${{ matrix.java }}'
+    - name: Set up Maven
+      uses: stCarolas/setup-maven@v4.5
+      with:
+        maven-version: 3.8.7
+    - name: 'Test with Maven'
+      run: mvn test --file pom- ${{ matrix.mc }}.xml
+    
+    
+  build:     
     runs-on: [self-hosted]
     container: "ubuntu:22.10"
 
@@ -31,7 +54,7 @@ jobs:
     - name: Set up Maven
       uses: stCarolas/setup-maven@v4.5
       with:
-        maven-version: 3.8.2
+        maven-version: 3.8.7
     - name: Build with Maven
       run: mvn -B package --file pom.xml
     - name: "upload"
