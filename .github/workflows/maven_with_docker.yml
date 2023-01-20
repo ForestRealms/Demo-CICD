@@ -21,7 +21,7 @@ on:
 jobs:
   test: 
     strategy:
-      max-parallel: 4
+      max-parallel: 3
       matrix:
         jdk: [16, 11, 8, 17, 18]
         mc: [1.14.3, 1.15.2, 1.16.5, 1.17.1, 1.18.2, 1.19.3]
@@ -38,6 +38,7 @@ jobs:
     
   build:     
     strategy:
+      max-parallel: 1
       matrix:
         mc: [1.14.3, 1.15.2, 1.16.5, 1.17.1, 1.18.2, 1.19.3]
     runs-on: [self-hosted]
@@ -58,7 +59,7 @@ jobs:
   package:
       needs: [build, test]
       runs-on: [self-hosted]
-      # container: "ubuntu:22.10"
+      container: "ubuntu:22.10"
       steps:
         - name: Download all artifacts"
           uses: actions/download-artifact@v3
@@ -66,13 +67,13 @@ jobs:
         - name: "copy and package"
           run: |
               mkdir ./artifacts
-              tree
               cp -r ./${{env.name}}* ./artifacts
-              tar -zcvf ./${{env.name}}-${{env.version}}.tar.gz ./artifacts
+#              tar -zcvf ./${{env.name}}-${{env.version}}.tar.gz ./artifacts
 
         - name: "upload-package-file"
           uses: actions/upload-artifact@v3
           with:
             name: ${{env.name}}-${{env.version}}
-            path: ./${{env.name}}-${{env.version}}.tar.gz
+            path: ./artifacts
+           # path: ./${{env.name}}-${{env.version}}.tar.gz
 
